@@ -1,0 +1,45 @@
+---
+- name: install mpd packages
+  with_items: "{{ mpd_packages }}"
+  pkgng:
+    name: "{{ item.name }}"
+    state: present
+  notify:
+    - rebuild mpd
+    - restart mpd
+
+- name: create port options dir
+  file:
+    path: /var/db/ports/audio_musicpd
+    state: directory
+
+- name: configure port options
+  template:
+    src: options.j2
+    dest: /var/db/ports/audio_musicpd/options
+  notify:
+    - rebuild mpd
+
+- name: create directories
+  with_items: "{{ mpd_directories }}"
+  file:
+    path: "{{ item.name }}"
+    state: directory
+    owner: mpd
+    group: mpd
+  notify:
+    - restart mpd
+
+- name: configure mpd
+  template:
+    src: musicpd.conf.j2
+    dest: /usr/local/etc/musicpd.conf
+  notify:
+    - restart mpd
+
+- name: enable mpd service
+  template:
+    src: musicpd.j2
+    dest: /etc/rc.conf.d/musicpd
+  notify:
+    - restart mpd

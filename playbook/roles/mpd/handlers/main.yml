@@ -1,0 +1,10 @@
+---
+- name: rebuild mpd
+  shell: make -DBATCH -C /usr/ports/audio/musicpd all deinstall install clean
+
+- name: restart mpd
+  service:
+    name: musicpd
+    state: restarted
+
+

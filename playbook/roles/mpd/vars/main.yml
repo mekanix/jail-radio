@@ -1,0 +1,7 @@
+---
+mpd_packages:
+  - name: musicpd
+
+mpd_directories:
+  - name: /var/mpd/music
+  - name: /var/mpd/.mpd/playlists
