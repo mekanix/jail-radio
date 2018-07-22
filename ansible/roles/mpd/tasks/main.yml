@@ -5,20 +5,7 @@
     name: "{{ item.name }}"
     state: present
   notify:
-    - rebuild mpd
     - restart mpd
-
-- name: create port options dir
-  file:
-    path: /var/db/ports/audio_musicpd
-    state: directory
-
-- name: configure port options
-  template:
-    src: options.j2
-    dest: /var/db/ports/audio_musicpd/options
-  notify:
-    - rebuild mpd
 
 - name: create directories
   with_items: "{{ mpd_directories }}"
